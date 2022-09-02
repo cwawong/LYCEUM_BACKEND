@@ -24,3 +24,5 @@ def getPost(request, pk):
     print(post)
     serilaizer = PostSerializer(post, many=False)
     return Response(serilaizer.data)
+
+# handsome guy
