@@ -14,12 +14,13 @@ def getRoutes(request):
 @api_view(['GET'])
 def getPosts(request):
     posts = Post.objects.all()
+
     serilaizer = PostSerializer(posts, many=True)
     return Response(serilaizer.data)
 
 @api_view(['GET'])
 def getPost(request, pk):
-    posts = Post.objects.get(id=pk)
-    print(posts)
-    serilaizer = PostSerializer(posts, many=False)
+    post = Post.objects.get(id=pk)
+    print(post)
+    serilaizer = PostSerializer(post, many=False)
     return Response(serilaizer.data)
