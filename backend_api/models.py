@@ -6,7 +6,7 @@ class Post(models.Model):
     message = models.TextField(null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('User', related_name= 'post', on_delete=models.CASCADE, null=True)
     tags = models.ManyToManyField('Tag', null=True)
 
     def __str__(self):
