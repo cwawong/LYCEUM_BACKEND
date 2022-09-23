@@ -1,5 +1,5 @@
 from django.db import models
-
+import logging
 
 class Post(models.Model):
     title = models.CharField(max_length=50, null=True)
@@ -11,6 +11,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title if self.title else 'No Name found'
+
+    @property
+    def user_info(self):
+        return {'name': self.user.name,
+                'gender': self.user.gender,
+                'email': self.user.email,
+                'phone': self.user.phone}
+
 
 
 class User(models.Model):
@@ -37,6 +45,7 @@ class SubPost(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=20)
+    is_subject = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
