@@ -1,12 +1,13 @@
 from django.db import models
 import logging
 
+
 class Post(models.Model):
     title = models.CharField(max_length=50, null=True)
     message = models.TextField(null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey('User', related_name= 'post', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('User', related_name='post', on_delete=models.CASCADE, null=True)
     tags = models.ManyToManyField('Tag', null=True)
 
     def __str__(self):
@@ -18,7 +19,6 @@ class Post(models.Model):
                 'gender': self.user.gender,
                 'email': self.user.email,
                 'phone': self.user.phone}
-
 
 
 class User(models.Model):
@@ -41,6 +41,13 @@ class SubPost(models.Model):
 
     def __str__(self):
         return 'Reply to ' + self.main_post.title
+
+    @property
+    def user_info(self):
+        return {'name': self.user.name,
+                'gender': self.user.gender,
+                'email': self.user.email,
+                'phone': self.user.phone}
 
 
 class Tag(models.Model):
