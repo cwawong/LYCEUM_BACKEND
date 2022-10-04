@@ -16,10 +16,16 @@ class PostList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        # logging.critical(request.data)
+        # serialized_tags = TagSerializer(data=request.data['tags'], many=True)
+        # request.data['tags'] = serialized_tags
+        # logging.critical(request.data)
+        request.data['tags'] = [{'name': tag} for tag in request.data['tags']]
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        logging.critical(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -106,16 +112,10 @@ class SubPostList(APIView):
 
 
 class SubPostDetail(APIView):
-    def get_object(self, pk):
-        try:
-            logging.critical('Testing')
-            return SubPost.objects.get(pk=pk)
-        except SubPost.DoesNotExist:
-            raise Http404
 
-    def get(self, request, pk, format=None):
-        sub_post = self.get_object(pk)
-        serializer = SubPostSerializer(sub_post)
+    def get(self, request, postID):
+        sub_posts = SubPost.objects.filter(main_post=postID)
+        serializer = SubPostSerializer(sub_posts, many=True)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
