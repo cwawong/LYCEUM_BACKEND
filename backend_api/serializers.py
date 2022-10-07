@@ -9,7 +9,6 @@ from .models import Post, User, SubPost, Tag
 
 
 class UserSerializer(ModelSerializer):
-    post = serializers.StringRelatedField(many=True)
     class Meta:
         model = User
         fields = '__all__'
